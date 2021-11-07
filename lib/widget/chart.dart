@@ -20,7 +20,7 @@ class Chart extends StatelessWidget {
           .fold(0, (acc, transaction) => acc + transaction.amount);
 
       return GroupedTransaction(day: weekDay, amount: amount);
-    }).toList();
+    }).reversed.toList();
   }
 
   double get _maxSpending {
