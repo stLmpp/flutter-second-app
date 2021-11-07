@@ -1,20 +1,22 @@
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:second_app/utils/currency.dart';
+import 'package:second_app/utils/date.dart';
 
 class TransactionAdd extends StatefulWidget {
   TransactionAdd({Key? key, required this.addTransaction}) : super(key: key);
 
-  final Function({required String title, required num amount}) addTransaction;
+  final Function({required String title, required num amount, required DateTime date}) addTransaction;
 
   @override
   _TransactionAddState createState() => _TransactionAddState();
 }
 
 class _TransactionAddState extends State<TransactionAdd> {
+  DateTime _date = DateTime.now();
   final _titleController = TextEditingController();
-
   final _amountController = TextEditingController();
+  final _dateController = TextEditingController(text: dateFormat.format(DateTime.now()));
 
   void _addTransaction() {
     final String title = _titleController.text;
@@ -26,7 +28,16 @@ class _TransactionAddState extends State<TransactionAdd> {
     if (amount < 0) {
       return;
     }
-    widget.addTransaction(title: title, amount: amount);
+    widget.addTransaction(title: title, amount: amount, date: _date);
+  }
+
+  Future<void> _showDatePicker() async {
+    final date = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2019), lastDate: DateTime.now());
+    if (date == null) {
+      return;
+    }
+    _date = date;
+    _dateController.text = dateFormat.format(_date);
   }
 
   @override
@@ -38,24 +49,34 @@ class _TransactionAddState extends State<TransactionAdd> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Title',
               ),
               controller: _titleController,
               textInputAction: TextInputAction.next,
             ),
             TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Amount',
               ),
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
               inputFormatters: [CurrencyTextInputFormatter(locale: 'pt-BR', decimalDigits: 2, symbol: 'R\$')],
               controller: _amountController,
-              onSubmitted: (_) => _addTransaction(),
+              textInputAction: TextInputAction.next,
+            ),
+            TextField(
+              decoration: InputDecoration(
+                  labelText: 'Date',
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.calendar_today),
+                    onPressed: _showDatePicker,
+                  )),
+              readOnly: true,
+              controller: _dateController,
             ),
             TextButton(
               onPressed: _addTransaction,
-              child: Text('Add transaction'),
+              child: const Text('Add transaction'),
             )
           ],
         ),

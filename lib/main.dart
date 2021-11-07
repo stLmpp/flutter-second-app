@@ -17,15 +17,10 @@ class MyApp extends StatelessWidget {
       title: 'Personal expenses',
       theme: ThemeData(
           primarySwatch: Colors.purple,
-          accentColor: Colors.amber,
+          colorScheme: ColorScheme.light().copyWith(secondary: Colors.amber),
           fontFamily: 'Quicksand',
           appBarTheme: AppBarTheme(
-            textTheme: ThemeData.light().textTheme.copyWith(
-                  headline6: TextStyle(
-                    fontFamily: 'OpenSans',
-                    fontSize: 20,
-                  ),
-                ),
+            toolbarTextStyle: TextStyle(fontFamily: 'OpenSans', fontSize: 20),
           ),
           textTheme: ThemeData.light().textTheme.copyWith(
                 headline6: TextStyle(
@@ -61,10 +56,17 @@ class _MyHomePageState extends State<MyHomePage> {
   void _addTransaction({
     required String title,
     required num amount,
+    required DateTime date,
   }) {
     Navigator.pop(context);
     setState(() {
-      _transactions.add(Transaction(title: title, amount: amount, date: DateTime.now()));
+      _transactions.add(Transaction(title: title, amount: amount, date: date));
+    });
+  }
+
+  void _deleteTransaction({required Transaction transaction}) {
+    setState(() {
+      _transactions.removeWhere((element) => element.id == transaction.id);
     });
   }
 
@@ -91,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: [
             Chart(recentTransactions: _recentTransactions),
-            TransactionsList(transactions: _transactions),
+            TransactionsList(transactions: _transactions, deleteTransaction: _deleteTransaction),
           ],
         ),
       ),

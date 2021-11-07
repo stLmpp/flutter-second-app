@@ -4,7 +4,9 @@ import 'package:second_app/utils/currency.dart';
 import 'package:second_app/utils/date.dart';
 
 class TransactionsList extends StatelessWidget {
-  TransactionsList({Key? key, required this.transactions}) : super(key: key);
+  TransactionsList({Key? key, required this.transactions, required this.deleteTransaction}) : super(key: key);
+
+  final Function({required Transaction transaction}) deleteTransaction;
 
   final List<Transaction> transactions;
 
@@ -49,49 +51,13 @@ class TransactionsList extends StatelessWidget {
                       dateFormatWithHours.format(transaction.date),
                       style: const TextStyle(color: Colors.grey),
                     ),
+                    trailing: IconButton(
+                        onPressed: () {
+                          deleteTransaction(transaction: transaction);
+                        },
+                        icon: Icon(Icons.delete)),
                   ),
                 );
-                // return Card(
-                //   key: ValueKey(transaction.id),
-                //   child: Row(
-                //     children: [
-                //       Container(
-                //         margin: const EdgeInsets.symmetric(
-                //           horizontal: 16,
-                //           vertical: 8,
-                //         ),
-                //         decoration: BoxDecoration(
-                //           border: Border.all(
-                //             color: Theme.of(context).primaryColor,
-                //             width: 2,
-                //           ),
-                //         ),
-                //         padding: const EdgeInsets.all(8),
-                //         child: Text(
-                //           '${currencyFormatter.format(transaction.amount)}',
-                //           style: TextStyle(
-                //             fontWeight: FontWeight.bold,
-                //             fontSize: 20,
-                //             color: Theme.of(context).primaryColor,
-                //           ),
-                //         ),
-                //       ),
-                //       Column(
-                //         crossAxisAlignment: CrossAxisAlignment.start,
-                //         children: [
-                //           Text(
-                //             transaction.title,
-                //             style: Theme.of(context).textTheme.headline6,
-                //           ),
-                //           Text(
-                //             dateFormatWithHours.format(transaction.date),
-                //             style: const TextStyle(color: Colors.grey),
-                //           ),
-                //         ],
-                //       )
-                //     ],
-                //   ),
-                // );
               },
             ),
     );
