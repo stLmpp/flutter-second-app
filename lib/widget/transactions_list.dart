@@ -52,10 +52,12 @@ class TransactionsList extends StatelessWidget {
                       style: const TextStyle(color: Colors.grey),
                     ),
                     trailing: IconButton(
-                        onPressed: () {
-                          deleteTransaction(transaction: transaction);
-                        },
-                        icon: Icon(Icons.delete)),
+                      onPressed: () {
+                        deleteTransaction(transaction: transaction);
+                      },
+                      icon: Icon(Icons.delete),
+                      color: Colors.red,
+                    ),
                   ),
                 );
               },

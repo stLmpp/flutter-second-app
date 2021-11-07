@@ -32,7 +32,12 @@ class _TransactionAddState extends State<TransactionAdd> {
   }
 
   Future<void> _showDatePicker() async {
-    final date = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2019), lastDate: DateTime.now());
+    final date = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2019),
+      lastDate: DateTime.now(),
+    );
     if (date == null) {
       return;
     }
@@ -77,7 +82,7 @@ class _TransactionAddState extends State<TransactionAdd> {
             TextButton(
               onPressed: _addTransaction,
               child: const Text('Add transaction'),
-            )
+            ),
           ],
         ),
       ),
