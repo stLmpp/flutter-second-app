@@ -44,10 +44,12 @@ class _MyHomePageState extends State<MyHomePage> {
     10,
     (index) => Transaction(
       title: 'Transaction $index',
-      date: DateTime.now(),
+      date: DateTime.now().subtract(Duration(days: new Random().nextInt(7))),
       amount: double.parse((new Random().nextDouble() * new Random().nextInt(100)).toStringAsFixed(2)),
     ),
   ).toList();
+
+  bool _showChart = false;
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((element) => element.date.isAfter(DateTime.now().subtract(Duration(days: 7)))).toList();
@@ -89,19 +91,38 @@ class _MyHomePageState extends State<MyHomePage> {
       ],
     );
     final mediaQuery = MediaQuery.of(context);
+    final isLandscape = mediaQuery.orientation == Orientation.landscape;
+    final transactionsList = Container(
+      height: (mediaQuery.size.height - appBar.preferredSize.height - mediaQuery.padding.top) * 0.7,
+      child: TransactionsList(transactions: _transactions, deleteTransaction: _deleteTransaction),
+    );
+    final chartFactory = (double size) => Container(
+          height: (mediaQuery.size.height - appBar.preferredSize.height - mediaQuery.padding.top) * size,
+          child: Chart(recentTransactions: _recentTransactions),
+        );
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              height: (mediaQuery.size.height - appBar.preferredSize.height - mediaQuery.padding.top) * 0.3,
-              child: Chart(recentTransactions: _recentTransactions),
-            ),
-            Container(
-              height: (mediaQuery.size.height - appBar.preferredSize.height - mediaQuery.padding.top) * 0.7,
-              child: TransactionsList(transactions: _transactions, deleteTransaction: _deleteTransaction),
-            ),
+            if (isLandscape)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Show chart'),
+                  Switch(
+                    value: _showChart,
+                    onChanged: (value) {
+                      setState(() {
+                        _showChart = value;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            if (!isLandscape) chartFactory(0.3),
+            if (!isLandscape) transactionsList,
+            isLandscape && _showChart ? chartFactory(0.7) : transactionsList,
           ],
         ),
       ),
