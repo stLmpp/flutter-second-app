@@ -95,11 +95,11 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: [
             Container(
-              height: (mediaQuery.size.height - appBar.preferredSize.height - mediaQuery.padding.top) * 0.4,
+              height: (mediaQuery.size.height - appBar.preferredSize.height - mediaQuery.padding.top) * 0.3,
               child: Chart(recentTransactions: _recentTransactions),
             ),
             Container(
-              height: (mediaQuery.size.height - appBar.preferredSize.height - mediaQuery.padding.top) * 0.6,
+              height: (mediaQuery.size.height - appBar.preferredSize.height - mediaQuery.padding.top) * 0.7,
               child: TransactionsList(transactions: _transactions, deleteTransaction: _deleteTransaction),
             ),
           ],
