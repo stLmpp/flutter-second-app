@@ -41,7 +41,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = List.generate(
-    0,
+    10,
     (index) => Transaction(
       title: 'Transaction $index',
       date: DateTime.now(),
@@ -79,21 +79,29 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      title: const Text('Personal expenses'),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => _openTransactionAdd(context),
+        ),
+      ],
+    );
+    final mediaQuery = MediaQuery.of(context);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Personal expenses'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => _openTransactionAdd(context),
-          ),
-        ],
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Chart(recentTransactions: _recentTransactions),
-            TransactionsList(transactions: _transactions, deleteTransaction: _deleteTransaction),
+            Container(
+              height: (mediaQuery.size.height - appBar.preferredSize.height - mediaQuery.padding.top) * 0.4,
+              child: Chart(recentTransactions: _recentTransactions),
+            ),
+            Container(
+              height: (mediaQuery.size.height - appBar.preferredSize.height - mediaQuery.padding.top) * 0.6,
+              child: TransactionsList(transactions: _transactions, deleteTransaction: _deleteTransaction),
+            ),
           ],
         ),
       ),
