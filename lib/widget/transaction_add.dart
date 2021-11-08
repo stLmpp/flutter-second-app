@@ -47,43 +47,45 @@ class _TransactionAddState extends State<TransactionAdd> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Title',
+    return SingleChildScrollView(
+      child: Card(
+        child: Container(
+          padding: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: MediaQuery.of(context).viewInsets.bottom + 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              TextField(
+                decoration: const InputDecoration(
+                  labelText: 'Title',
+                ),
+                controller: _titleController,
+                textInputAction: TextInputAction.next,
               ),
-              controller: _titleController,
-              textInputAction: TextInputAction.next,
-            ),
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Amount',
+              TextField(
+                decoration: const InputDecoration(
+                  labelText: 'Amount',
+                ),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [CurrencyTextInputFormatter(locale: 'pt-BR', decimalDigits: 2, symbol: 'R\$')],
+                controller: _amountController,
+                textInputAction: TextInputAction.next,
               ),
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [CurrencyTextInputFormatter(locale: 'pt-BR', decimalDigits: 2, symbol: 'R\$')],
-              controller: _amountController,
-              textInputAction: TextInputAction.next,
-            ),
-            TextField(
-              decoration: InputDecoration(
-                  labelText: 'Date',
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.calendar_today),
-                    onPressed: _showDatePicker,
-                  )),
-              readOnly: true,
-              controller: _dateController,
-            ),
-            TextButton(
-              onPressed: _addTransaction,
-              child: const Text('Add transaction'),
-            ),
-          ],
+              TextField(
+                decoration: InputDecoration(
+                    labelText: 'Date',
+                    suffixIcon: IconButton(
+                      icon: const Icon(Icons.calendar_today),
+                      onPressed: _showDatePicker,
+                    )),
+                readOnly: true,
+                controller: _dateController,
+              ),
+              TextButton(
+                onPressed: _addTransaction,
+                child: const Text('Add transaction'),
+              ),
+            ],
+          ),
         ),
       ),
     );
