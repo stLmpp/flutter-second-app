@@ -51,13 +51,21 @@ class TransactionsList extends StatelessWidget {
                     dateFormatWithHours.format(transaction.date),
                     style: const TextStyle(color: Colors.grey),
                   ),
-                  trailing: IconButton(
-                    onPressed: () {
-                      deleteTransaction(transaction: transaction);
-                    },
-                    icon: Icon(Icons.delete),
-                    color: Colors.red,
-                  ),
+                  trailing: MediaQuery.of(context).size.width > 460
+                      ? TextButton.icon(
+                          onPressed: () {
+                            deleteTransaction(transaction: transaction);
+                          },
+                          icon: const Icon(Icons.delete),
+                          label: Text('Delete'),
+                        )
+                      : IconButton(
+                          onPressed: () {
+                            deleteTransaction(transaction: transaction);
+                          },
+                          icon: const Icon(Icons.delete),
+                          color: Colors.red,
+                        ),
                 ),
               );
             },
